@@ -11,3 +11,33 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.App {
+  width: 400px;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+ul {
+  list-style-type: none;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 10px 10px 10px 0px;
+  margin-bottom: 0px;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid lightgrey;
+}
+
+button {
+  width: 100px;
+  border: 1px solid black;
+  border-radius: 0px 0px 10px 10px;
+}
