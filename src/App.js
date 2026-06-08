@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { loadClients, remover } from "./actions";
+import { loadClients, remover, editor } from "./actions";
 
 function App() {
   const clients = useSelector((state) => state.clients);
@@ -14,6 +14,11 @@ function App() {
 
   const handleRemove = (id) => {
     dispatch(remover(id))
+  }
+
+  const handleEdit = (id, phone) => {
+    const newPhone = prompt("Enter new phone number");
+    dispatch(editor(id, newPhone))
   }
 
   return (
@@ -33,7 +38,10 @@ function App() {
                 <li><span>Email:</span> {user.email}</li>
                 <li><span>Phone:</span> {user.phone}</li>
               </ul>
-              <button onClick={() => handleRemove(user.id)}>Remove</button>
+              <span className="buttons">
+                <button onClick={() => handleEdit(user.id, user.phone)}>Edit Number</button>
+                <button onClick={() => handleRemove(user.id)}>Remove User</button>
+              </span>
             </div>
           })
         }

@@ -30,6 +30,19 @@ const reducer = (state = initialState, action) => {
         ...state,
         clients: state.clients.filter((client) => client.id !== action.payload)
       }
+    case "edit/clients/fulfilled":
+      return {
+        ...state,
+        clients: state.clients.map((client) => {
+          if (client.id === action.payload.id) {
+            return {
+              ...client,
+              phone: action.payload.phone
+            }
+          }
+          return client;
+        })
+      }
       
     default:
       return state;

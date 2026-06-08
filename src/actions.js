@@ -37,3 +37,25 @@ export const remover = (id) => {
        })
     } 
 }
+
+
+export const editor = (id, newPhone) => {
+    return (dispatch) => {
+        fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            },
+            body: JSON.stringify({
+                phone: newPhone
+            }) 
+        })
+        .then((response) => response.json())
+        .then(() => {
+            dispatch({
+                type: "edit/clients/fulfilled",
+                payload: {id, phone: newPhone}
+            })
+        })
+    }
+}
