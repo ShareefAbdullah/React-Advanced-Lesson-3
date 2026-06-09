@@ -1,3 +1,5 @@
+import { type } from "@testing-library/user-event/dist/type";
+
 export const loadClients = () => {
     return (dispatch) => {
         fetch("https://jsonplaceholder.typicode.com/users")
@@ -25,22 +27,26 @@ export const loadClients = () => {
 
 export const remover = (id) => {
     return (dispatch) => {
-       fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
-        method: "DELETE"
-       })
-       .then((response) => response.json())
-       .then(() => {
+        dispatch({type: "remove/clients/pending", payload: id});
+
+        fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
+            method: "DELETE"
+        })
+        .then((response) => response.json())
+        .then(() => {
             dispatch({
                 type: "remove/clients/fulfilled",
                 payload: id
             });
-       })
+        })
     } 
 }
 
 
 export const editor = (id, newPhone) => {
     return (dispatch) => {
+        dispatch({type: "edit/clients/pending", payload: id});
+
         fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
             method: "PATCH",
             headers: {

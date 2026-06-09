@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { loadClients, remover, editor } from "./actions";
+import { ClipLoader } from "react-spinners";
 
 function App() {
   const clients = useSelector((state) => state.clients);
@@ -39,8 +40,21 @@ function App() {
                 <li><span>Phone:</span> {user.phone}</li>
               </ul>
               <span className="buttons">
-                <button onClick={() => handleEdit(user.id, user.phone)}>Edit Number</button>
-                <button onClick={() => handleRemove(user.id)}>Remove User</button>
+                <button
+                  onClick={() => handleEdit(user.id, user.phone)}
+                  disabled={user.editing}
+                >
+                  {user.editing ? "Processing..." : "Edit Number"}
+                </button>
+                <div>
+                  {user.editing || user.removing ? <ClipLoader size={18}/> : ""}
+                </div>
+                <button 
+                  onClick={() => handleRemove(user.id)}
+                  disabled={user.removing}
+                >
+                  {user.removing ? "Removing..." : "Remove User"}
+                </button>
               </span>
             </div>
           })
