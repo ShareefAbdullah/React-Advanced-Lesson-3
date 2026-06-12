@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { loadClients, remover, editor } from "./actions";
+import { loadClients, remover, editor } from "./redux/actions";
 import { ClipLoader } from "react-spinners";
+import { Clients } from "./components/Clients";
+import { Header } from "./components/Header";
 
 function App() {
   const clients = useSelector((state) => state.clients);
@@ -24,43 +26,17 @@ function App() {
 
   return (
     <div className="App">
-      <header>
-        <h1>Clients</h1>
-      </header>
-      <main>
-        <h3>{isError ? message : ""}</h3>
-        <p>{!isError && clients.length === 0 ? "Loading..." : ""}</p>
-        {
-          clients.map((user) => {
-            return <div key={user.id}>
-              <ul>
-                <li><span>Name:</span> {user.name}</li>
-                <li><span>Nickname:</span> {user.username}</li>
-                <li><span>Email:</span> {user.email}</li>
-                <li><span>Phone:</span> {user.phone}</li>
-              </ul>
-              <span className="buttons">
-                <button
-                  onClick={() => handleEdit(user.id, user.phone)}
-                  disabled={user.editing}
-                >
-                  {user.editing ? "Processing..." : "Edit Number"}
-                </button>
-                <div>
-                  {user.editing || user.removing ? <ClipLoader size={18}/> : ""}
-                </div>
-                <button 
-                  onClick={() => handleRemove(user.id)}
-                  disabled={user.removing}
-                >
-                  {user.removing ? "Removing..." : "Remove User"}
-                </button>
-              </span>
-            </div>
-          })
-        }
-      </main>
-      
+      <Header
+        clients={clients}
+        message={message}
+        isError={isError}
+      />
+      <Clients
+        clients={clients}
+        handleEdit={handleEdit}
+        handleRemove={handleRemove}
+        ClipLoader={ClipLoader} 
+      />
     </div>
   );
 }
