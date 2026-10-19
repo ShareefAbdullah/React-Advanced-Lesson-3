@@ -1,22 +1,30 @@
-const initialState = {
-  clients: [],
-  message: "",
-  isError: false
+import { ActionTypes, ClientType } from "./actions";
+
+type InitialStateType = {
+  clients: ClientType[];
+  message: string;
+  isError: boolean;
 };
 
-export const reducer = (state = initialState, action) => {
-  switch(action.type) {
+const initialState: InitialStateType = {
+  clients: [],
+  message: "",
+  isError: false,
+};
+
+export const reducer = (state = initialState, action: ActionTypes) => {
+  switch (action.type) {
     case "load/clients/fulfilled":
       return {
         ...state,
-        clients: action.payload
-      }
+        clients: action.payload,
+      };
     case "load/clients/rejected":
       return {
         ...state,
         isError: true,
-        message: action.payload
-      }
+        message: action.payload,
+      };
     case "remove/clients/pending":
       return {
         ...state,
@@ -24,17 +32,17 @@ export const reducer = (state = initialState, action) => {
           if (client.id === action.payload) {
             return {
               ...client,
-              removing: true
-            }
+              removing: true,
+            };
           }
           return client;
-        })
-      }
+        }),
+      };
     case "remove/clients/fulfilled":
       return {
         ...state,
-        clients: state.clients.filter((client) => client.id !== action.payload)
-      }
+        clients: state.clients.filter((client) => client.id !== action.payload),
+      };
     case "edit/clients/pending":
       return {
         ...state,
@@ -42,12 +50,12 @@ export const reducer = (state = initialState, action) => {
           if (client.id === action.payload) {
             return {
               ...client,
-              editing: true
-            }
+              editing: true,
+            };
           }
-          return client
-        })
-      }
+          return client;
+        }),
+      };
     case "edit/clients/fulfilled":
       return {
         ...state,
@@ -56,14 +64,14 @@ export const reducer = (state = initialState, action) => {
             return {
               ...client,
               phone: action.payload.phone,
-              editing: false
-            }
+              editing: false,
+            };
           }
           return client;
-        })
-      }
-      
+        }),
+      };
+
     default:
       return state;
   }
-}
+};
