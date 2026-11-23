@@ -1,0 +1,32 @@
+.client {
+  ul {
+    list-style-type: none;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px 10px 0px 0px;
+    margin-bottom: 0px;
+  }
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid lightgrey;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+
+    div {
+      margin-top: 5px;
+    }
+
+    button {
+      width: 100px;
+      height: 30px;
+      border: 1px solid black;
+      border-radius: 0px 0px 10px 10px;
+      border-top: none;
+    }
+  }
+}

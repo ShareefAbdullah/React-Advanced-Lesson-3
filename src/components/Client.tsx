@@ -1,8 +1,22 @@
+import React from "react";
 import { ClipLoader } from "react-spinners";
+import { ClientType } from "../redux/clientsSlice";
+import styles from "../styles/clients.module.scss";
 
-export const Client = ({ client, handleEdit, handleRemove }) => {
+type ClientProps = {
+  client: ClientType;
+  handleEdit: (id: number, phone: string) => void;
+  handleRemove: (id: number) => void;
+  Cliploader: typeof ClipLoader;
+};
+
+export const Client: React.FC<ClientProps> = ({
+  client,
+  handleEdit,
+  handleRemove,
+}) => {
   return (
-    <div>
+    <div className={styles.client}>
       <ul>
         <li>
           <span>Name:</span> {client.name}
@@ -17,8 +31,11 @@ export const Client = ({ client, handleEdit, handleRemove }) => {
           <span>Phone:</span> {client.phone}
         </li>
       </ul>
-      <span className="buttons">
-        <button onClick={() => handleEdit(client.id)} disabled={client.editing}>
+      <div className={styles.buttons}>
+        <button
+          onClick={() => handleEdit(client.id, client.phone)}
+          disabled={client.editing}
+        >
           {client.editing ? "Processing..." : "Edit Number"}
         </button>
         <div>
@@ -30,7 +47,7 @@ export const Client = ({ client, handleEdit, handleRemove }) => {
         >
           {client.removing ? "Removing..." : "Remove User"}
         </button>
-      </span>
+      </div>
     </div>
   );
 };

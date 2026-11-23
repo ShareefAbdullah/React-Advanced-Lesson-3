@@ -1,24 +1,25 @@
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { loadClients, remover, editor } from "./redux/clientsSlice";
 import { Clients } from "./components/Clients";
 import { Header } from "./components/Header";
+import { useTypedDispatch, useTypedSelector } from "./redux/hooks";
+import { ClipLoader } from "react-spinners";
 
 function App() {
-  const clients = useSelector((state) => state.clients.clients);
-  const message = useSelector((state) => state.clients.message);
-  const isError = useSelector((state) => state.clients.isError);
-  const dispatch = useDispatch();
+  const clients = useTypedSelector((state) => state.clients.clients);
+  const message = useTypedSelector((state) => state.clients.message);
+  const isError = useTypedSelector((state) => state.clients.isError);
+  const dispatch = useTypedDispatch();
 
   useEffect(() => {
     dispatch(loadClients());
   }, []);
 
-  const handleRemove = (id) => {
+  const handleRemove = (id: number) => {
     dispatch(remover(id));
   };
 
-  const handleEdit = (id) => {
+  const handleEdit = (id: number) => {
     const newPhone = prompt("Enter new phone number");
 
     if (newPhone) {
@@ -33,6 +34,7 @@ function App() {
         clients={clients}
         handleEdit={handleEdit}
         handleRemove={handleRemove}
+        Cliploader={ClipLoader}
       />
     </div>
   );

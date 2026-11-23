@@ -1,72 +1,99 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const loadClients = createAsyncThunk(
-  "load/clients",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await fetch(
-        "https://jsonplaceholder.typicode.com/users"
+export type ClientType = {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  phone: string;
+  editing?: boolean;
+  removing?: boolean;
+};
+
+export const loadClients = createAsyncThunk<
+  ClientType[],
+  void,
+  { rejectValue: string }
+>("load/clients", async (_, { rejectWithValue }) => {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/users");
+    if (!response.ok) {
+      throw new Error(
+        "Couldn't reach the server. Please check your internet connection."
       );
-      if (!response.ok) {
-        throw new Error(
-          "Couldn't reach the server. Please check your internet connection."
-        );
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
+    }
+    const data: ClientType[] = await response.json();
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
       return rejectWithValue(error.message);
     }
+    return rejectWithValue("Something went wrong.");
   }
-);
+});
 
-export const remover = createAsyncThunk(
-  "remove/clients",
-  async (id, { rejectWithValue }) => {
-    try {
-      const response = await fetch(
-        `https://jsonplaceholder.typicode.com/users/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Couldn't delete the client.");
+export const remover = createAsyncThunk<
+  number,
+  number,
+  { rejectValue: string }
+>("remove/clients", async (id, { rejectWithValue }) => {
+  try {
+    const response = await fetch(
+      `https://jsonplaceholder.typicode.com/users/${id}`,
+      {
+        method: "DELETE",
       }
-      return id;
-    } catch (error) {
+    );
+    if (!response.ok) {
+      throw new Error("Couldn't delete the client.");
+    }
+    return id;
+  } catch (error) {
+    if (error instanceof Error) {
       return rejectWithValue(error.message);
     }
+    return rejectWithValue("Something went wrong.");
   }
-);
+});
 
-export const editor = createAsyncThunk(
-  "edit/client",
-  async ({ id, newPhone }, { rejectWithValue }) => {
-    try {
-      const response = await fetch(
-        `https://jsonplaceholder.typicode.com/users/${id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
-          body: JSON.stringify({
-            phone: newPhone,
-          }),
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Couldn't update the phone number.");
+export const editor = createAsyncThunk<
+  { id: number; phone: string },
+  { id: number; newPhone: string },
+  { rejectValue: string }
+>("edit/client", async ({ id, newPhone }, { rejectWithValue }) => {
+  try {
+    const response = await fetch(
+      `https://jsonplaceholder.typicode.com/users/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+        body: JSON.stringify({
+          phone: newPhone,
+        }),
       }
-      return { id, phone: newPhone };
-    } catch (error) {
+    );
+    if (!response.ok) {
+      throw new Error("Couldn't update the phone number.");
+    }
+    return { id, phone: newPhone };
+  } catch (error) {
+    if (error instanceof Error) {
       return rejectWithValue(error.message);
     }
+    return rejectWithValue("Something went wrong.");
   }
-);
+});
 
-const initialState = {
+export type InitialStateType = {
+  clients: ClientType[];
+  message: string;
+  isError: boolean;
+  isLoading: boolean;
+};
+
+const initialState: InitialStateType = {
   clients: [],
   message: "",
   isError: false,
